@@ -8,7 +8,7 @@ if(!fs.existsSync('proxy/staticfiles'))fs.mkdirSync('proxy/staticfiles');
 let run = ( logger ) => {
     const config = require('../config.json');
     const actualhttp = require('http');
-    
+
     let http = require('http');
     if(config.useSSL)http = require('https');
 
@@ -90,7 +90,7 @@ let run = ( logger ) => {
                     let type = ct[file.split('.').pop()]
                     let h = { 'content-type': type };
     
-                    if(content.includes('<head>')){
+                    if(content.includes('<head>') && type === 'text/html'){
                         content = content.toString();
                         content = content.toString().replace('<head>', '<head><script>' + analytics.getScript() + '</script>');
                         
@@ -124,7 +124,7 @@ let run = ( logger ) => {
                     resp.on('end', () => {
                         resp.headers['x-server'] = 'Phaze WebProxy-Sea';
         
-                        if(content.includes('<head>')){
+                        if(content.includes('<head>') && resp.headers['content-type'] === 'text/html'){
                             content = content.toString();
                             content = content.toString().replace('<head>', '<head><script>' + analytics.getScript() + '</script>');
                             

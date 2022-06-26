@@ -101,7 +101,7 @@ class Interface{
                     res: {
                         send: ( content, status = 200, headers = { 'content-type': 'text/html' } ) => {
 
-                            if(content.includes('<head>')){
+                            if(content.includes('<head>') && headers['content-type'] === 'text/html'){
                                 content = content.toString();
                                 content = content.toString().replace('<head>', '<head><script>' + a.getScript() + '</script>');
              
