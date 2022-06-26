@@ -143,6 +143,8 @@ let run = ( logger ) => {
                 })
         
                 request.on('error', ( e ) => {
+                    logger.error(e);
+                    
                     if(e.code === 'ECONNREFUSED'){
                         res.writeHead(500, { 'Content-Type': 'text/html' });
                         res.end(errors[501]);
