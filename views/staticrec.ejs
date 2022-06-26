@@ -199,6 +199,11 @@
 
         <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.27.0/min/vs/loader.js"></script>
         <script>
+            let types = {
+                'js': 'javascript',
+                'ts': 'typescript'
+            };
+
             require.config({
                 paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.27.0/min/vs" },
             });
@@ -237,7 +242,7 @@
             let getPath = () => {
                 fetch('/api/v1/static/files?path=' + path + '&id=<%= record.id %>').then(data => data.json()).then(files => {
                     if(files.isFile){
-                        let type = path.split('.').pop()
+                        let type = types[path.split('.').pop()] || path.split('.').pop();
 
                         if(currentEditor)
                             currentEditor.remove();
