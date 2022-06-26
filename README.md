@@ -31,7 +31,7 @@ Config Setup:
 - Run: `node .` to test that it works
 - Add it as a service `nano /etc/systemd/system/pdns.service`
 
-```
+```s
 [Unit]
 Description=Proxy Server
 
