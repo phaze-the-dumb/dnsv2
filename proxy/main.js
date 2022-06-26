@@ -7,7 +7,8 @@ if(!fs.existsSync('proxy/staticfiles'))fs.mkdirSync('proxy/staticfiles');
 
 let run = ( logger ) => {
     const config = require('../config.json');
-
+    const actualhttp = require('http');
+    
     let http = require('http');
     if(config.useSSL)http = require('https');
 
@@ -107,7 +108,7 @@ let run = ( logger ) => {
                     logger.error(e);
                 }
             } else{
-                let request = http.request({
+                let request = actualhttp.request({
                     host: data.ip,
                     port: data.port,
                     method: req.method,
@@ -144,7 +145,7 @@ let run = ( logger ) => {
         
                 request.on('error', ( e ) => {
                     logger.error(e);
-                    
+
                     if(e.code === 'ECONNREFUSED'){
                         res.writeHead(500, { 'Content-Type': 'text/html' });
                         res.end(errors[501]);
