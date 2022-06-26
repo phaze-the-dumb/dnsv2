@@ -21,6 +21,9 @@ let run = ( logger ) => {
         501: fs.readFileSync('templates/error.html').toString().split('{{ code }}').join('500').split('{{ text }}').join('Server Didn\'t Respond')
     }
 
+    let port = 80;
+    if(config.useSSL)port = 443;
+
     http.createServer({
         key: fs.readFileSync('keys/key.pem'),
         cert: fs.readFileSync('keys/cert.pem')
@@ -156,7 +159,7 @@ let run = ( logger ) => {
                 req.pipe(request);
             }
         })
-    }).listen(80);
+    }).listen(port);
 }   
 
 let addIntercept = ( filter, cb ) => {
