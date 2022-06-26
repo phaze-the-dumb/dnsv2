@@ -1,14 +1,13 @@
 const { randomUUID } = require('crypto');
 const ct = require('./contenttype.js');
 const fs = require('fs');
-let interceptors = [];
 
-const fs = require('fs');
+let interceptors = [];
 if(!fs.existsSync('proxy/staticfiles'))fs.mkdirSync('proxy/staticfiles');
 
 let run = ( logger ) => {
     const config = require('../config.json');
-    
+
     const http = require('http');
     if(config.useSSL)http = require('https');
 
