@@ -8,7 +8,7 @@ if(!fs.existsSync('proxy/staticfiles'))fs.mkdirSync('proxy/staticfiles');
 let run = ( logger ) => {
     const config = require('../config.json');
 
-    const http = require('http');
+    let http = require('http');
     if(config.useSSL)http = require('https');
 
     const analytics = require('../analytics/main.js');
