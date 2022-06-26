@@ -1,0 +1,451 @@
+<html>
+    <head>
+        <style>
+            body{
+                background: rgb(248, 251, 255);
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            .center{
+                position: fixed;
+                top: 100px;
+                left: 50%;
+                transform: translate(-50%, 0);
+                text-align: center;
+                height: 50%;
+                width: 25%;
+            }
+
+            .box{
+                box-shadow: rgba(0, 0, 0, 0.123) 0px 0px 25px;
+                border-radius: 5px;
+                background: rgb(255, 255, 255);
+                margin: 10px;
+            }
+
+            .avatar{
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                background: rgb(0, 162, 255);
+                display: inline-flex;
+                margin: 10px;
+                vertical-align: middle;
+                align-items: center;
+                color: rgb(0, 162, 255);
+            }
+
+            .input{
+                margin: 10px;
+                padding: 10px;
+                outline: none;
+                width: calc(100% - 100px);
+                border: rgb(212, 212, 212) 2px solid;
+                border-radius: 5px;
+                transition: 0.25s;
+            }
+
+            .input:hover{
+                border: rgb(105, 105, 105) 2px solid;
+            }
+
+            .input:focus{
+                box-shadow: #0005 0 0 5px;
+            }
+
+            .button{
+                margin: 10px;
+                padding: 10px;
+                outline: none;
+                width: calc(100% - 125px);
+                border: rgb(0, 162, 255) 2px solid;
+                border-radius: 5px;
+                transition: 0.25s;
+                background: rgb(0, 162, 255);
+                cursor: pointer;
+                user-select: none;
+                display: inline-block;
+                color: white;
+            }
+
+            .button:hover{
+                box-shadow: #0005 0 0 5px;
+            }
+
+            #errText{
+                color: red;
+            }
+
+            .navBar{
+                width: calc(100% - 20px);
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 38px;
+            }
+
+            .nav{
+                display: inline-block;
+                padding: 10px;
+                transition: 0.25s;
+                cursor: pointer;
+                user-select: none;
+                border-radius: 5px;
+            }
+            
+            .nav:hover{
+                background: rgb(196, 196, 196);
+            }
+
+            .sidebar{
+                position: fixed;
+                top: 58px;
+                left: 0;
+                height: calc(100% - 78px); 
+                width: 250px;
+            }
+
+            .main{
+                position: fixed;
+                top: 58px;
+                left: 270px;
+                width: calc(100% - 270px);
+                height: calc(100% - 68px);
+                text-align: center;
+                overflow: auto;
+            }
+
+            .line-blue{ stroke: #137ffa; color: #137ffa; }
+            .line-green{ stroke: #00db54; color: #00db54; }
+            .line-red{ stroke: #c10c0c; color: #c10c0c; }
+            .line-yellow{ stroke: #f3ef0b; color: #f3ef0b; }
+            .line-orange{ stroke: #f3960b; color: #f3960b; }
+            .line-purple{ stroke: #bd0bf3; color: #bd0bf3; }
+            .line-pink{ stroke: #f30bc1; color: #f30bc1; }
+            .line-deepblue{ stroke: #0400ff; color: #0400ff; }
+            .line-skyblue{ stroke: #00e1ff; color: #00e1ff; }
+            .line-greenblue{ stroke: #00ffd5; color: #00ffd5; }
+
+            .line-bluedark{ stroke: #003674; color: #003674; }
+            .line-greendark{ stroke: #00792e; color: #00792e; }
+            .line-reddark{ stroke: #690000; color: #690000; }
+            .line-yellowdark{ stroke: #7e7c00; color: #7e7c00; }
+            .line-orangedark{ stroke: #7a4900; color: #7a4900; }
+            .line-purpledark{ stroke: #640083; color: #640083; }
+            .line-pinkdark{ stroke: #77005d; color: #77005d; }
+            .line-deepbluedark{ stroke: #020072; color: #020072; }
+            .line-skybluedark{ stroke: #006674; color: #006674; }
+            .line-greenbluedark{ stroke: #007965; color: #007965; }
+
+            .row{
+                display: flex;
+            }
+        </style>
+        <link rel="stylesheet" href="/assets/chartist.min.css">
+    </head>
+    <body>
+        <div class="box navBar">
+            <div class="nav">Main</div>
+            <div class="nav" onclick="window.location = '/account'">Account</div>
+        </div>
+
+        <div class="box sidebar">
+            <div class="nav" onclick="window.location = '/panel'" style="width: calc(100% - 20px);">Home</div><br />
+            <div class="nav" onclick="window.location = '/panel/records'" style="width: calc(100% - 20px);">Records</div><br />
+            <div class="nav" onclick="window.location = '/panel/apps'" style="width: calc(100% - 20px);">Applications</div><br />
+            <div class="nav" onclick="window.location = '/panel/logs'" style="width: calc(100% - 20px);">Logs</div><br />
+            <div class="nav" onclick="window.location = '/panel/static'" style="width: calc(100% - 20px);">Static</div><br />
+            <div class="nav" onclick="window.location = '/panel/admin'" style="width: calc(100% - 20px);">Administration</div><br />
+        </div>
+
+        <div class="main">
+            <div class="row">
+                <div class="box" style="width: 100%;">
+                    <h2>Requests In The Past 24 Hours</h2>
+
+                    <div class="ct-chart" style="height: 200px;"></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="box" style="width: 75%; height: 500px;">
+                    <div style="display: flex; height: 300px;">
+                        <div style="width: 50%;">
+                            <h2>Web Browsers</h2>
+                            <div class="browsers-chart" style="height: 75%;"></div>
+                        </div>
+                        <div style="width: 50%;">
+                            <h2>Operating Systems</h2>
+                            <div class="os-chart" style="height: 75%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="hosts"></div>
+                </div>
+                <div style="width: 25%; height: 500px;">
+                    <div class="box" style="height: 240px; margin-bottom: 20px;">
+                        <br /><br /><span>Average Load Time</span>
+                        <%
+                            let respTime = 0
+                            pages.forEach(p => {
+                                respTime += parseInt(p.loadTime)
+                            })
+
+                            respTime = (respTime / pages.length).toFixed(2);
+                        %>
+                        <h1><%= respTime %>ms</h1>
+
+                        <div class="button" onclick="fetch('/api/v1/analytics', { method: 'DELETE' })">Reset Analytics</div>
+                    </div>
+                    <div class="box" style="height: 240px;">
+                        <br /><br /><span>Bot Requests</span>
+                        <h1><%= requests.length - pages.length %><span style="font-size: 15px;">/<%= security.length %></span></h1>
+
+                        <div class="button" onclick="fetch('/api/v1/security', { method: 'DELETE' })">Reset Security</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="box" style="width: 25%;">
+                    <h2>Locations</h2>
+                    <div class="location-chart" style="height: 250px;"></div>
+                </div>
+                <div class="box" style="width: 25%;">
+                    <h2>Methods</h2>
+                    <div class="method-chart" style="height: 250px;"></div>
+                </div>
+                <div class="box" style="width: 50%; text-align: center;">
+                    <div style="display: inline-block;">
+                        <h3>Total Requests Served</h3>
+                        <h1><%= requests.length %></h1>
+                    </div>
+                    <div style="display: inline-block;">
+                        <h3>Total Pages Served</h3>
+                        <h1><%= pages.length %></h1>
+                    </div><br />
+                    <div style="display: inline-block;">
+                        <h3>Total Unique Visitors</h3>
+                        <% let ips = [];
+
+                        requests.forEach(r => {
+                            if(!ips.find(x => x === r.ip))ips.push(r.ip)
+                        }) %>
+
+                        <h1><%= ips.length %></h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="/assets/chartist.min.js"></script>
+        <%
+            let allCount = 0;
+            let hours24 = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
+            let currentDate = Date.now();
+            let labels = [];
+            let hosts = [];
+
+            let getHours24 = ( host ) => {
+                let data = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
+
+                requests.forEach(r => {
+                    if(r.host !== host)return null;
+                    let d = new Date(r.time);
+    
+                    if(r.time > currentDate - (24 * 3600000)){
+                        data[Math.floor((currentDate - r.time) / 3600000)]++
+                    }
+                })
+
+                data.reverse();
+                return data;
+            }
+
+            requests.forEach(r => {
+                let d = new Date(r.time);
+
+                if(r.time > currentDate - (24 * 3600000)){
+                    hours24[Math.floor((currentDate - r.time) / 3600000)]++
+
+                    allCount++;
+                    if(hosts.find(x => x.host === r.host)){
+                        hosts.find(x => x.host === r.host).count++;
+                    } else{
+                        hosts.push({ host: r.host, count: 1 });
+                    }
+                }
+            })
+
+            for(let i = 0; i < 24; i++){
+                let time = new Date(currentDate - (i * 3600000));
+                labels.push(time.getHours() + ':' + time.getMinutes());
+            }
+
+            hosts = hosts.sort((a, b) => b.count - a.count);
+
+            hours24.reverse();
+            labels.reverse();
+
+            let getOS = ( userAgent ) => {
+                if(userAgent.includes('windows')){
+                    return 'Windows'
+                } else if(userAgent.includes('android')){
+                    return 'Android'
+                } else if(userAgent.includes('ios')){
+                    return 'IOS'
+                } else if(userAgent.includes('linux')){
+                    return 'Linux'
+                } else {
+                    return 'Unknown'
+                }
+            }
+
+            let getBrowser = ( userAgent ) => {
+                if(userAgent.includes('firefox')){
+                    return 'Mozilla Firefox'
+                } else if(userAgent.includes('chrome')){
+                    return 'Google Chrome'
+                } else if(userAgent.includes('safari')){
+                    return 'Safari'
+                } else if(userAgent.includes('opera')){
+                    return 'Opera'
+                } else if(userAgent.includes('msie')){
+                    return 'Internet Explorer'
+                } else {
+                    return 'Unknown'
+                }
+            }
+
+            let browsers = [];
+            let data = [];
+            let oss = [];
+            let osdata = [];
+            let locations = [];
+            let locData = [];
+            let methods = [];
+            let methodData = [];
+
+            let reks = requests.filter(x => x.time > currentDate - 86400000);
+            reks.forEach(req => {
+                let ua = getBrowser(req.headers['user-agent'].toLowerCase())
+                let index = browsers.indexOf(ua)
+                
+                if(index !== -1){
+                    data[index]++;
+                } else{
+                    browsers.push(ua);
+                    data.push(1);
+                }
+
+                let ua1 = getOS(req.headers['user-agent'].toLowerCase())
+                let index1 = oss.indexOf(ua1)
+                
+                if(index1 !== -1){
+                    osdata[index1]++;
+                } else{
+                    oss.push(ua1);
+                    osdata.push(1);
+                }
+
+                let index2 = locations.indexOf(req.location)
+                
+                if(index2 !== -1){
+                    locData[index2]++;
+                } else{
+                    locations.push(req.location);
+                    locData.push(1);
+                }
+
+                let index3 = methods.indexOf(req.method)
+                
+                if(index3 !== -1){
+                    methodData[index3]++;
+                } else{
+                    methods.push(req.method);
+                    methodData.push(1);
+                }
+            })
+        %>
+        <script>
+            let colours = [ 'line-blue', 'line-green', 'line-red', 'line-yellow', 'line-orange', 'line-purple', 'line-pink', 'line-deepblue', 'line-skyblue', 'line-greenblue', 'line-bluedark', 'line-greendark', 'line-reddark', 'line-yellowdark', 'line-orangedark', 'line-purpledark', 'line-pinkdark', 'line-deepbluedark', 'line-skybluedark', 'line-greenbluedark' ];
+
+            let sriers = [
+                <% hosts.forEach((h, i) => { %>
+                    { value: <%- JSON.stringify(getHours24(h.host)) %>, className: colours[<%- i + 1 %>] },
+                <% }) %>
+                { value: <%- JSON.stringify(hours24) %>, className: 'line-blue' }
+            ];
+
+            let hosts = <%- JSON.stringify(hosts) %>;
+            let hostsDiv = document.querySelector('.hosts');
+
+            let text = '<div class="'+colours[0]+'">ALL >> <%= allCount %></div>';
+            hosts.forEach((h, i) => {
+                text += '<div class="'+colours[i + 1]+'">'+h.host+' >> '+h.count+'</div>'  
+            })
+
+            hostsDiv.innerHTML = text;
+
+            let c = new Chartist.Line('.ct-chart', {
+                labels: <%- JSON.stringify(labels) %>,
+                series: sriers
+            }, {
+                low: 0,
+                showArea: true
+            });
+
+            new Chartist.Pie('.browsers-chart', {
+                labels: <%- JSON.stringify(browsers) %>,
+                series: <%- JSON.stringify(data) %>,
+            }, {
+                donut: true,
+                donutWidth: 30,
+                donutSolid: true,
+                startAngle: 270,
+                chartPadding: 30,
+                labelOffset: 25,
+                labelDirection: 'explode'
+            });
+
+            new Chartist.Pie('.os-chart', {
+                labels: <%- JSON.stringify(oss) %>,
+                series: <%- JSON.stringify(osdata) %>,
+            }, {
+                donut: true,
+                donutWidth: 30,
+                donutSolid: true,
+                startAngle: 270,
+                chartPadding: 30,
+                labelOffset: 25,
+                labelDirection: 'explode'
+            });
+
+            new Chartist.Pie('.location-chart', {
+                labels: <%- JSON.stringify(locations) %>,
+                series: <%- JSON.stringify(locData) %>,
+            }, {
+                donut: true,
+                donutWidth: 30,
+                donutSolid: true,
+                startAngle: 270,
+                chartPadding: 30,
+                labelOffset: 25,
+                labelDirection: 'explode'
+            });
+
+            new Chartist.Pie('.method-chart', {
+                labels: <%- JSON.stringify(methods) %>,
+                series: <%- JSON.stringify(methodData) %>,
+            }, {
+                donut: true,
+                donutWidth: 30,
+                donutSolid: true,
+                startAngle: 270,
+                chartPadding: 30,
+                labelOffset: 25,
+                labelDirection: 'explode'
+            });
+        </script>
+    </body>
+</html>

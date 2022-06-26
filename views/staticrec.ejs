@@ -1,0 +1,348 @@
+<html>
+    <head>
+        <style>
+            body{
+                background: rgb(248, 251, 255);
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            .box{
+                box-shadow: rgba(0, 0, 0, 0.123) 0px 0px 25px;
+                border-radius: 5px;
+                background: rgb(255, 255, 255);
+                margin: 10px;
+            }
+
+            .button{
+                margin: 10px;
+                padding: 10px;
+                outline: none;
+                width: calc(100% - 125px);
+                border: rgb(0, 162, 255) 2px solid;
+                border-radius: 5px;
+                transition: 0.25s;
+                background: rgb(0, 162, 255);
+                cursor: pointer;
+                user-select: none;
+                display: inline-block;
+                color: white;
+            }
+
+            .button:hover{
+                box-shadow: #0005 0 0 5px;
+            }
+
+            .input{
+                margin: 10px;
+                padding: 10px;
+                outline: none;
+                width: calc(100% - 100px);
+                border: rgb(212, 212, 212) 2px solid;
+                border-radius: 5px;
+                transition: 0.25s;
+            }
+
+            .input:hover{
+                border: rgb(105, 105, 105) 2px solid;
+            }
+
+            .input:focus{
+                box-shadow: #0005 0 0 5px;
+            }
+
+            .navBar{
+                width: calc(100% - 20px);
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 38px;
+            }
+
+            .nav{
+                display: inline-block;
+                padding: 10px;
+                transition: 0.25s;
+                cursor: pointer;
+                user-select: none;
+                border-radius: 5px;
+            }
+            
+            .nav:hover{
+                background: rgb(196, 196, 196);
+            }
+
+            .sidebar{
+                position: fixed;
+                top: 58px;
+                left: 0;
+                height: calc(100% - 78px); 
+                width: 250px;
+            }
+
+            .main1{
+                position: fixed;
+                top: 58px;
+                left: 270px;
+                width: calc(100% - 270px);
+                height: calc(100% - 68px);
+                overflow: auto;
+            }
+
+            .row{
+                display: flex;
+            }
+
+            #files{
+                margin: 10px;
+                padding: 5px 0; 
+                background: rgb(105, 105, 105);
+                border-radius: 5px;
+            }
+
+            #path{
+                margin: 10px;
+                padding: 10px;
+                background: rgb(105, 105, 105);
+                border-radius: 5px;
+                text-align: left;
+            }
+
+            .file{
+                text-align: left;
+                background: rgba(0, 162, 255, 0.089);
+                border-radius: 5px;
+                padding: 5px 10px;
+                margin: 10px;
+                cursor: pointer;
+                transition: 0.25s;
+                user-select: none;
+            }
+
+            .file:hover{
+                background: rgba(0, 162, 255);
+            }
+
+            #codebox{
+                width: calc(100% - 10px);
+                height: 650px;
+                margin: 5px;
+                border-radius: 5px;
+            }
+
+            #cbox{
+                display: none;
+            }
+            
+            #uploadBox{
+                display: none;
+            }
+        </style>
+        <link rel="stylesheet" href="/assets/chartist.min.css">
+    </head>
+    <body>
+        <div class="box navBar">
+            <div class="nav">Main</div>
+            <div class="nav" onclick="window.location = '/account'">Account</div>
+        </div>
+
+        <div class="box sidebar">
+            <div class="nav" onclick="window.location = '/panel'" style="width: calc(100% - 20px);">Home</div><br />
+            <div class="nav" onclick="window.location = '/panel/records'" style="width: calc(100% - 20px);">Records</div><br />
+            <div class="nav" onclick="window.location = '/panel/apps'" style="width: calc(100% - 20px);">Applications</div><br />
+            <div class="nav" onclick="window.location = '/panel/logs'" style="width: calc(100% - 20px);">Logs</div><br />
+            <div class="nav" onclick="window.location = '/panel/static'" style="width: calc(100% - 20px);">Static</div><br />
+            <div class="nav" onclick="window.location = '/panel/admin'" style="width: calc(100% - 20px);">Administration</div><br />
+        </div>
+
+        <div class="main1">
+            <div class="row">
+                <div class="box" style="width: 100%; text-align: center;">
+                    <h2><%= record.host %></h2>
+                </div>
+            </div>
+
+            <div class="row" id="fls">
+                <div class="box" style="width: 100%; text-align: center;">
+                    <div class="button" onclick="back()">Back</div> 
+
+                    <div id="path">/</div>
+                    <div id="files"></div>
+
+                    <input class="input" placeholder="Folder / File Name" id="fname" style="width: 680px;"><br />
+                    <div class="button" style="width: 300px;" onclick="newFolder()">New Folder</div>
+                    <div class="button" style="width: 300px;" onclick="newFile()">New File</div><br />
+
+                    <div class="button" style="width: 300px;" onclick="document.querySelector('#uploadBox').style.display = 'block';">Upload File</div>
+                    <div class="button" style="width: 300px;" onclick="deleteFile()">Delete Folder</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="box" style="width: 100%;" id="cbox">
+                    <div class="code-controls" style="text-align: center;">
+                        <div class="nav" style="float: left; background: red;" onclick="deleteFile()">Delete</div>
+                        <div class="nav" onclick="currentEditor.remove();" style="float: right;">Close</div>
+                        <div class="nav" style="float: right; background: rgb(0, 162, 255);" onclick="save()" id="save">Save</div>
+                    </div><br /><br />
+                    <div id="codebox"></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="box" style="width: 100%; padding: 10px; text-align: center;" id="uploadBox">
+                    <input type="file" id="fileuploadbit">
+
+                    <div class="button" style="width: 300px;" onclick="upload(document.querySelector('#fileuploadbit'))">Upload</div>
+                </div>
+            </div> 
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.27.0/min/vs/loader.js"></script>
+        <script>
+            require.config({
+                paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.27.0/min/vs" },
+            });
+
+            let originPath = '';
+            let path = '';
+            let currentEditor = null;
+
+            let openFile = ( f ) => {
+                path += '/'+f;
+                getPath();
+            }
+
+            let back = () => {
+                let psplit = path.split('/');
+                psplit.pop();
+
+                path = psplit.join('/');
+                getPath();
+            }
+
+            let upload = ( file ) => {
+                let data = new FormData();
+                data.append('file', file.files[0]);
+
+                fetch('/api/v1/static/files?path=' + path + '&id=<%= record.id %>&file='+file.files[0].name, {
+                        method: 'POST',
+                        body: data
+                }).then(data => data.json()).then(data => {
+                    if(data.ok){
+                        getPath();
+                    }
+                })
+            }
+
+            let getPath = () => {
+                fetch('/api/v1/static/files?path=' + path + '&id=<%= record.id %>').then(data => data.json()).then(files => {
+                    if(files.isFile){
+                        let type = path.split('.').pop()
+
+                        if(currentEditor)
+                            currentEditor.remove();
+                        
+                        currentEditor = openEditor(files.contents, type);
+                    } else{
+                        let text = '';
+
+                        files.forEach(f => {
+                            text += '<div class="file" onclick="openFile(\''+f+'\')">'+f+'</div>'
+                        })
+
+                        document.querySelector('#path').innerHTML = path || '/';
+                        document.querySelector('#files').innerHTML = text;
+
+                        originPath = path;
+                    }
+                })
+            }
+
+            let newFile = () => {
+                let name = document.querySelector('#fname');
+
+                fetch('/api/v1/static/newfile?path=' + path + '/' + name.value + '&id=<%= record.id %>', {
+                    method: 'PUT'
+                }).then(data => data.json()).then(data => {
+                    if(data.ok){
+                        name.value = '';
+                        getPath();
+                    }
+                })
+            }
+
+            let newFolder = () => {
+                let name = document.querySelector('#fname');
+
+                fetch('/api/v1/static/newfolder?path=' + path + '/' + name.value + '&id=<%= record.id %>', {
+                    method: 'PUT'
+                }).then(data => data.json()).then(data => {
+                    if(data.ok){
+                        name.value = '';
+                        getPath();
+                    }
+                })
+            }
+
+            let deleteFile = () => {
+                fetch('/api/v1/static/files?path=' + path + '&id=<%= record.id %>', {
+                    method: 'DELETE'
+                }).then(data => data.json()).then(data => {
+                    currentEditor.remove();
+                    currentEditor = null;
+
+                    getPath();
+                })
+            }
+
+            let save = () => {
+                let value = currentEditor.getValue();
+
+                fetch('/api/v1/static/files?path=' + path + '&id=<%= record.id %>', {
+                    method: 'PUT',
+                    body: value
+                }).then(data => data.json()).then(data => {
+                    if(data.ok){
+                        document.querySelector('#save').innerHTML = 'Saved!';
+
+                        setTimeout(() => {
+                            document.querySelector('#save').innerHTML = 'Save';
+                        }, 5000)
+                    }
+                })
+            }
+
+            let openEditor = ( code, type ) => {
+                document.querySelector('#cbox').style.display = 'block';
+                document.querySelector('#fls').style.display = 'none';
+                let editor = monaco.editor.create(document.querySelector('#codebox'), {
+                    value: code,
+                    language: type,
+                    automaticLayout: true,
+                    theme: 'theme'
+                });
+
+                editor.remove = () => {
+                    document.querySelector('#cbox').innerHTML = '<div class="code-controls" style="text-align: center;"><div class="nav" style="float: left; background: red;" onclick="deleteFile()">Delete</div><div class="nav" onclick="currentEditor.remove();" style="float: right;">Close</div><div class="nav" style="float: right; background: rgb(0, 162, 255);" onclick="save()" id="save">Save</div></div><br /><br /><div id="codebox"></div>';
+                    document.querySelector('#cbox').style.display = 'none';
+                    document.querySelector('#fls').style.display = 'flex';
+
+                    path = originPath;
+                }
+
+                return editor;
+            }
+
+            require(["vs/editor/editor.main"], function () {
+                monaco.editor.defineTheme('theme', {
+                    base: 'vs-dark',
+                    inherit: true,
+                    rules: [],
+                    colors: {}
+                });
+            });
+
+            getPath();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <title>Phaze PDNS</title>
+
+        <style>
+            canvas{
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: -100; 
+            }
+
+            .center{
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                text-align: center;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                text-shadow: black 5px 5px 10px;
+            }
+
+            h1{
+                font-size: 100px;
+                margin: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="center">
+            <h1>{{ code }}</h1>
+            <h2>{{ text }}</h2>
+        </div>
+
+        <script>
+            let canvas = document.createElement('canvas');
+            let ctx = canvas.getContext('2d');
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            document.body.appendChild(canvas);
+
+            let blobs = [];
+            let colour = Math.random() * 360;
+
+            class Blob{
+                constructor(){
+                    this.size = (Math.random() * 250) + 100;
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.colour = 'hsl('+ (colour - (Math.random() * 100)) +', 50%, 50%)'
+                }
+                render(){
+                    ctx.fillStyle = this.colour;
+
+                    ctx.shadowBlur = 100;
+                    ctx.shadowColor = this.colour;
+
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+                    ctx.fill(); 
+                    ctx.closePath();
+                }
+            }
+
+            let render = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                blobs.forEach(b => b.render());
+            }
+
+            window.onresize = () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            
+                start();
+            }
+
+            let start = () => {
+                blobs = [];
+
+                for (let index = 0; index < 200; index++) {
+                    blobs.push(new Blob())
+                }
+
+                render();
+            }
+            
+            start();
+        </script>
+    </body>
+</html>

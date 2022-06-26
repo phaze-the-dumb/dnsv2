@@ -1,0 +1,13 @@
+{
+    "name": "Phoenix",
+    "appsDir": "apps/files",
+    "accounts": [
+        {
+            "username": "phaze",
+            "password": "test",
+            "config": {
+                "isAdmin": true
+            }
+        }
+    ]
+}

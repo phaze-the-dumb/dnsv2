@@ -1,0 +1,174 @@
+<html>
+    <head>
+        <style>
+            body{
+                background: rgb(248, 251, 255);
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            .center{
+                position: fixed;
+                top: 100px;
+                left: 50%;
+                transform: translate(-50%, 0);
+                text-align: center;
+                height: 50%;
+                width: 25%;
+            }
+
+            .box{
+                box-shadow: rgba(0, 0, 0, 0.123) 0px 0px 25px;
+                border-radius: 5px;
+                background: rgb(255, 255, 255);
+                margin: 10px;
+            }
+
+            .avatar{
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                background: rgb(0, 162, 255);
+                display: inline-flex;
+                margin: 10px;
+                vertical-align: middle;
+                align-items: center;
+                color: rgb(0, 162, 255);
+            }
+
+            .input{
+                margin: 10px;
+                padding: 10px;
+                outline: none;
+                width: calc(100% - 100px);
+                border: rgb(212, 212, 212) 2px solid;
+                border-radius: 5px;
+                transition: 0.25s;
+            }
+
+            .input:hover{
+                border: rgb(105, 105, 105) 2px solid;
+            }
+
+            .input:focus{
+                box-shadow: #0005 0 0 5px;
+            }
+
+            .button{
+                margin: 10px;
+                padding: 10px;
+                outline: none;
+                width: calc(100% - 125px);
+                border: rgb(0, 162, 255) 2px solid;
+                border-radius: 5px;
+                transition: 0.25s;
+                background: rgb(0, 162, 255);
+                cursor: pointer;
+                user-select: none;
+                display: inline-block;
+                color: white;
+            }
+
+            .button:hover{
+                box-shadow: #0005 0 0 5px;
+            }
+
+            #errText{
+                color: red;
+            }
+
+            .navBar{
+                width: calc(100% - 20px);
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 38px;
+            }
+
+            .nav{
+                display: inline-block;
+                padding: 10px;
+                transition: 0.25s;
+                cursor: pointer;
+                user-select: none;
+                border-radius: 5px;
+            }
+            
+            .nav:hover{
+                background: rgb(196, 196, 196);
+            }
+
+            .sidebar{
+                position: fixed;
+                top: 58px;
+                left: 0;
+                height: calc(100% - 78px); 
+                width: 250px;
+            }
+
+            .main{
+                position: fixed;
+                top: 58px;
+                left: 270px;
+                width: calc(100% - 270px);
+                height: calc(100% - 68px);
+            }
+
+            .line-blue{ stroke: #137ffa; }
+            .line-green{ stroke: #0cc151; }
+            .line-red{ stroke: #c10c0c; }
+            .line-yellow{ stroke: #f3ef0b; }
+            .line-orange{ stroke: #f3960b; }
+            .line-purple{ stroke: #bd0bf3; }
+            .line-pink{ stroke: #f30bc1; }
+            .line-deepblue{ stroke: #0400ff; }
+            .line-skyblue{ stroke: #00e1ff; }
+            .line-greenblue{ stroke: #00ffd5; }
+
+            .row{
+                display: flex;
+            }
+
+            th{
+                background: rgb(224, 224, 224);
+                padding: 5px 15px;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                border-radius: 1px;
+            }
+
+            td{
+                padding: 5px 15px;
+                background: rgb(217, 230, 255);
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                border-radius: 1px;
+            }
+
+            th:first-child{
+                border-radius: 5px 1px 1px 1px;
+            }
+
+            th:last-child{
+                border-radius: 1px 5px 1px 1px;
+            }
+        </style>
+        <link rel="stylesheet" href="/assets/chartist.min.css">
+    </head>
+    <body>
+        <div class="box navBar">
+            <div class="nav">Main</div>
+            <div class="nav" onclick="window.location = '/account'">Account</div>
+        </div>
+
+        <div class="box sidebar">
+            <div class="nav" onclick="window.location = '/panel'" style="width: calc(100% - 20px);">Home</div><br />
+            <div class="nav" onclick="window.location = '/panel/records'" style="width: calc(100% - 20px);">Records</div><br />
+            <div class="nav" onclick="window.location = '/panel/apps'" style="width: calc(100% - 20px);">Applications</div><br />
+            <div class="nav" onclick="window.location = '/panel/logs'" style="width: calc(100% - 20px);">Logs</div><br />
+            <div class="nav" onclick="window.location = '/panel/static'" style="width: calc(100% - 20px);">Static</div><br />
+            <div class="nav" onclick="window.location = '/panel/admin'" style="width: calc(100% - 20px);">Administration</div><br />
+        </div>
+
+        <div class="main">
+            <%- app.html %>
+        </div>
+    </body>
+</html>
