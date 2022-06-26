@@ -3,8 +3,14 @@ const ct = require('./contenttype.js');
 const fs = require('fs');
 let interceptors = [];
 
+const fs = require('fs');
+if(!fs.existsSync('proxy/staticfiles'))fs.mkdirSync('proxy/staticfiles');
+
 let run = ( logger ) => {
+    const config = require('../config.json');
+    
     const http = require('http');
+    if(config.useSSL)http = require('https');
 
     const analytics = require('../analytics/main.js');
     const security = require('../security/main.js');
@@ -16,7 +22,10 @@ let run = ( logger ) => {
         501: fs.readFileSync('templates/error.html').toString().split('{{ code }}').join('500').split('{{ text }}').join('Server Didn\'t Respond')
     }
 
-    http.createServer((req, res) => {
+    http.createServer({
+        key: fs.readFileSync('keys/key.pem'),
+        cert: fs.readFileSync('keys/cert.pem')
+    }, (req, res) => {
         let startTime = Date.now();
 
         let icpts = [];

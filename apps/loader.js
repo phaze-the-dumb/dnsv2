@@ -1,5 +1,8 @@
 const { randomUUID } = require('crypto');
 
+const fs = require('fs');
+if(!fs.existsSync('apps/files'))fs.mkdirSync('apps/files');
+
 let apps = [];
 
 let run = ( logger ) => {

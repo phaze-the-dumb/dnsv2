@@ -1,6 +1,7 @@
 {
     "name": "Phoenix",
     "appsDir": "apps/files",
+    "useSSL": true,
     "accounts": [
         {
             "username": "phaze",
