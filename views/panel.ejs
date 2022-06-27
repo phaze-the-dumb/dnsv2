@@ -328,7 +328,7 @@
 
             let reks = requests.filter(x => x.time > currentDate - 86400000);
             reks.forEach(req => {
-                let ua = getBrowser(req.headers['user-agent'].toLowerCase())
+                let ua = getBrowser(req.headers['user-agent'].toLowerCase() || req.headers['user-agent'])
                 let index = browsers.indexOf(ua)
                 
                 if(index !== -1){
@@ -338,7 +338,7 @@
                     data.push(1);
                 }
 
-                let ua1 = getOS(req.headers['user-agent'].toLowerCase())
+                let ua1 = getOS(req.headers['user-agent'].toLowerCase() || req.headers['user-agent'])
                 let index1 = oss.indexOf(ua1)
                 
                 if(index1 !== -1){
