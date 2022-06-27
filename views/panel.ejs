@@ -328,24 +328,26 @@
 
             let reks = requests.filter(x => x.time > currentDate - 86400000);
             reks.forEach(req => {
-                let ua = getBrowser(req.headers['user-agent'].toLowerCase() || req.headers['user-agent'])
-                let index = browsers.indexOf(ua)
-                
-                if(index !== -1){
-                    data[index]++;
-                } else{
-                    browsers.push(ua);
-                    data.push(1);
-                }
+                if(req.headers['user-agent']){
+                    let ua = getBrowser(req.headers['user-agent'].toLowerCase())
+                    let index = browsers.indexOf(ua)
+                    
+                    if(index !== -1){
+                        data[index]++;
+                    } else{
+                        browsers.push(ua);
+                        data.push(1);
+                    }
 
-                let ua1 = getOS(req.headers['user-agent'].toLowerCase() || req.headers['user-agent'])
-                let index1 = oss.indexOf(ua1)
-                
-                if(index1 !== -1){
-                    osdata[index1]++;
-                } else{
-                    oss.push(ua1);
-                    osdata.push(1);
+                    let ua1 = getOS(req.headers['user-agent'].toLowerCase())
+                    let index1 = oss.indexOf(ua1)
+                    
+                    if(index1 !== -1){
+                        osdata[index1]++;
+                    } else{
+                        oss.push(ua1);
+                        osdata.push(1);
+                    }
                 }
 
                 let index2 = locations.indexOf(req.location)
